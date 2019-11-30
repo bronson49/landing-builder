@@ -5,6 +5,7 @@ const fs = require('fs');
 const CopyWebpackPlugin= require('copy-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const MODE = require('yargs').argv.mode;
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 function generateHtmlPlugins (templateDir) {
     const templateFilesAll = fs.readdirSync(path.resolve(__dirname, templateDir));
@@ -29,6 +30,7 @@ module.exports = {
     entry: [
         './app/js/index.js',
         './app/styles/style.scss',
+        './app/assets/js/app.js',
     ],
     output: {
         filename: 'js/index.js',
@@ -63,6 +65,10 @@ module.exports = {
                     }
                 ]
             },
+            {
+                test: /\.vue$/,
+                loader: 'vue-loader'
+            },
         ],
     },
     plugins: [
@@ -85,6 +91,7 @@ module.exports = {
                 to: './img'
             },
         ]),
+        new VueLoaderPlugin(),
     ].concat(htmlPlugins),
 
 };
